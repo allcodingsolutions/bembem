@@ -1,6 +1,6 @@
 {
     "name": "bembem",
-    "version": "0.0.1",
+    "version": "0.0.3",
     "description": "mixins for writing BEM-style code",
     "main": "index.js",
     "scripts": {
@@ -16,7 +16,7 @@
         "pug",
         "bemit"
     ],
-    "author": "Carlos A. Cabrera (github.com/carlosacabrera)",
+    "author": "Carlos A. Cabrera (http://github.com/carlosacabrera), Giuliano Kranevitter (http://github.com/giulianok)",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/hipstergoat/bembem/issues"

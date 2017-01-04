@@ -1,5 +1,7 @@
 # BEM! BEM!
 
+
+
 ## Install
 `npm install bembem --save-dev`
 
@@ -7,20 +9,52 @@
 
 ## Usage
 
+In order to use absolute include paths with Gulp.js you must add the bembem path into both sass _(includePaths)_ and pug _(basedir)_ options:
+
+
+### webpack
+
+`webpack.config.js`
+
+```javascript
+const webpack = require('webpack');
+const bembem = require('bembem');
+
+module.exports = {
+    entry: {
+        app: ['./src/main']
+    },
+    output: {
+        filename: '[name].js'
+    },
+    module: {
+        {
+            test: /\.scss$/,
+            loaders: ['sass']
+        }, {
+            test: /\.pug$/,
+            loaders: ['pug?root=' + bembem.includePaths] // for absolute includes
+        }]
+    },
+    sassLoader: {
+      includePaths: [ bembem.includePaths ] // for absolute includes
+    }
+};
+```
+
 ### Gulp.js
 
-Demo project available at <https://github.com/hipstergoat/bembem-demo>
-
-In order to use absolute include paths with Gulp.js you must add the `./node_modules/bembem` path into both sass _(includePaths)_ and pug _(basedir)_ options:
 
 `gulpfile.js`
 
 ```javascript
+const bembem = require('bembem');
+
 // styles
 gulp.task('styles', () => {
     gulp.src('./src/**/*.scss')
         .pipe($.sass({
-            includePaths: ['./src', './node_modules/bembem'] // for absolute includes
+            includePaths: ['./src', bembem.includePaths] // for absolute includes
         }).on('error', $.sass.logError))
         .pipe(gulp.dest(pathDist));
 });
@@ -29,7 +63,7 @@ gulp.task('styles', () => {
 gulp.task('views', () => {
     gulp.src(['!./src/**/_*.pug', './src/**/*.pug'])
         .pipe($.pug({
-            basedir: './node_modules/bembem' // for absolute includes
+            basedir: bembem.includePaths // for absolute includes
         }))
         .pipe(gulp.dest(pathDist));
 });
@@ -70,7 +104,7 @@ Then include mixins into your Sass styles and Pug views:
 ```
 
 `component.view.pug`
-```scss
+```jade
 include /bembem // include bembem mixins
 
 - var $prefix = 'item-'
@@ -91,3 +125,8 @@ include /bembem // include bembem mixins
 - Jade: http://jade-lang.com/
 - Sass: http://sass-lang.com/
 - Bemto: https://github.com/kizu/bemto
+
+---
+## Credits
+- Sass Mixins by Giuliano Kranevitter <http://github.com/giulianok>
+- Pug Mixins based on Bemto <https://github.com/kizu/bemto> 
